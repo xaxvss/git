@@ -307,7 +307,7 @@ test_submodule_content () {
 # to protect the history!
 #
 
-# Internal function; use test_submodule_switch_func(), test_submodule_switch_func(),
+# Internal function; use test_submodule_switch_func(), test_submodule_switch(),
 # or test_submodule_forced_switch() instead.
 test_submodule_switch_common () {
 	command="$1"
