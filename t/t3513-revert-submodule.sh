@@ -15,6 +15,11 @@ git_revert () {
 	git status -su >expect &&
 	ls -1pR * >>expect &&
 	tar cf "$TRASH_DIRECTORY/tmp.tar" * &&
+	$OVERWRITING_FAIL git checkout "$1" &&
+	if test -n "$OVERWRITING_FAIL"
+	then
+		return
+	fi &&
 	git checkout "$1" &&
 	git revert HEAD &&
 	rm -rf * &&

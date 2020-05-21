@@ -8,7 +8,11 @@ test_description='stash can handle submodules'
 git_stash () {
 	git status -su >expect &&
 	ls -1pR * >>expect &&
-	git read-tree -u -m "$1" &&
+	$OVERWRITING_FAIL git read-tree -u -m "$1" &&
+	if test -n "$OVERWRITING_FAIL"
+	then
+		return
+	fi &&
 	git stash &&
 	git status -su >actual &&
 	ls -1pR * >>actual &&
