@@ -2318,7 +2318,7 @@ static int module_set_branch(int argc, const char **argv, const char *prefix)
 	ret = config_set_in_gitmodules_file_gently(config_name, opt_branch);
 
 	free(config_name);
-	return ret;
+	return !!ret;
 }
 
 #define SUPPORT_SUPER_PREFIX (1<<0)
