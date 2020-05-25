@@ -245,7 +245,7 @@ EOM
 EOM
       if (!($name =~ /xdiff|libreftable/)) {
         print F << "EOM";
-    <ProjectReference Include="$cdup\\reftable\\libreftable\\libreftable.vcxproj">
+    <ProjectReference Include="$cdup\\reftable\\libreftable.proj\\libreftable.vcxproj">
       <Project>$uuid_libreftable</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
