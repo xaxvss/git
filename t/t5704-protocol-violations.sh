@@ -6,9 +6,20 @@ communications if the other side says something unexpected. We are mostly
 making sure that we do not segfault or otherwise behave badly.'
 . ./test-lib.sh
 
+# If we don't print the object format, we'll fail for a spurious reason: the
+# mismatched object format.
+print_object_format () {
+	local algo=$(test_oid algo) &&
+	if test "$algo" != "sha1"
+	then
+		packetize "object-format=$algo"
+	fi
+}
+
 test_expect_success 'extra delim packet in v2 ls-refs args' '
 	{
 		packetize command=ls-refs &&
+		print_object_format &&
 		printf 0001 &&
 		# protocol expects 0000 flush here
 		printf 0001
@@ -21,6 +32,7 @@ test_expect_success 'extra delim packet in v2 ls-refs args' '
 test_expect_success 'extra delim packet in v2 fetch args' '
 	{
 		packetize command=fetch &&
+		print_object_format &&
 		printf 0001 &&
 		# protocol expects 0000 flush here
 		printf 0001
