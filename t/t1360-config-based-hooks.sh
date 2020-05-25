@@ -65,10 +65,10 @@ test_expect_success 'git hook list reorders on duplicate commands' '
 '
 
 test_expect_success 'git hook list --porcelain prints just the command' '
-	cat >expected <<-\EOF &&
-	/path/ghi
-	/path/abc
-	/path/def
+	cat >expected <<-EOF &&
+	$ROOT/path/ghi
+	$ROOT/path/abc
+	$ROOT/path/def
 	EOF
 
 	git hook list --porcelain pre-commit >actual &&
