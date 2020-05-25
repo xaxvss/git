@@ -18,10 +18,19 @@ test_expect_success 'setup hooks in global, and local' '
 	git config --add --global hook.pre-commit.command "/path/def"
 '
 
+ROOT=
+if test_have_prereq MINGW
+then
+	# In Git for Windows, Unix-like paths work only in shell scripts;
+	# `git.exe`, however, will prefix them with the pseudo root directory
+	# (of the Unix shell). Let's accommodate for that.
+	ROOT="$(cd / && pwd)"
+fi
+
 test_expect_success 'git hook list orders by config order' '
-	cat >expected <<-\EOF &&
-	global:	/path/def
-	local:	/path/ghi
+	cat >expected <<-EOF &&
+	global:	$ROOT/path/def
+	local:	$ROOT/path/ghi
 	EOF
 
 	git hook list pre-commit >actual &&
@@ -32,10 +41,10 @@ test_expect_success 'git hook list dereferences a hookcmd' '
 	git config --add --local hook.pre-commit.command "abc" &&
 	git config --add --global hookcmd.abc.command "/path/abc" &&
 
-	cat >expected <<-\EOF &&
-	global:	/path/def
-	local:	/path/ghi
-	local:	/path/abc
+	cat >expected <<-EOF &&
+	global:	$ROOT/path/def
+	local:	$ROOT/path/ghi
+	local:	$ROOT/path/abc
 	EOF
 
 	git hook list pre-commit >actual &&
@@ -45,10 +54,10 @@ test_expect_success 'git hook list dereferences a hookcmd' '
 test_expect_success 'git hook list reorders on duplicate commands' '
 	git config --add --local hook.pre-commit.command "/path/def" &&
 
-	cat >expected <<-\EOF &&
-	local:	/path/ghi
-	local:	/path/abc
-	local:	/path/def
+	cat >expected <<-EOF &&
+	local:	$ROOT/path/ghi
+	local:	$ROOT/path/abc
+	local:	$ROOT/path/def
 	EOF
 
 	git hook list pre-commit >actual &&
